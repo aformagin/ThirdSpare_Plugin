@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+group 'com.thirdspare'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url = uri("https://papermc.io/repo/repository/maven-public/")}
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.json:json:20210307'
+    compileOnly 'io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}

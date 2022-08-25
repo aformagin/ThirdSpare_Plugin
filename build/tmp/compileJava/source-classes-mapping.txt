@@ -1,0 +1,80 @@
+com/thirdspare/thirdsparemain/commands/teleportcommands/TeleportToLocationCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.TeleportToLocationCommand
+com/thirdspare/thirdsparemain/groups/Guild.java
+ com.thirdspare.thirdsparemain.groups.Guild
+com/thirdspare/thirdsparemain/groups/GroupTemplate.java
+ com.thirdspare.thirdsparemain.groups.GroupTemplate
+com/thirdspare/thirdsparemain/commands/RollCommand.java
+ com.thirdspare.thirdsparemain.commands.RollCommand
+com/thirdspare/thirdsparemain/commands/CustomItemGiveCommand.java
+ com.thirdspare.thirdsparemain.commands.CustomItemGiveCommand
+com/thirdspare/thirdsparemain/inventories/InvGui.java
+ com.thirdspare.thirdsparemain.inventories.InvGui
+com/thirdspare/thirdsparemain/commands/ListCommand.java
+ com.thirdspare.thirdsparemain.commands.ListCommand
+com/thirdspare/thirdsparemain/utilities/Utils.java
+ com.thirdspare.thirdsparemain.utilities.Utils
+com/thirdspare/thirdsparemain/structures/WarpStone.java
+ com.thirdspare.thirdsparemain.structures.WarpStone
+com/thirdspare/thirdsparemain/Zone.java
+ com.thirdspare.thirdsparemain.Zone
+com/thirdspare/thirdsparemain/structures/BlockLayer.java
+ com.thirdspare.thirdsparemain.structures.BlockLayer
+com/thirdspare/thirdsparemain/commands/teleportcommands/SetSpawnCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.SetSpawnCommand
+com/thirdspare/thirdsparemain/commands/StructCommand.java
+ com.thirdspare.thirdsparemain.commands.StructCommand
+com/thirdspare/thirdsparemain/chat/ChatChannel.java
+ com.thirdspare.thirdsparemain.chat.ChatChannel
+com/thirdspare/thirdsparemain/groups/GroupTypes.java
+ com.thirdspare.thirdsparemain.groups.GroupTypes
+com/thirdspare/thirdsparemain/StandaloneFunctionTesster.java
+ com.thirdspare.thirdsparemain.StandaloneFunctionTesster
+com/thirdspare/thirdsparemain/commands/teleportcommands/TeleportPlayerCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.TeleportPlayerCommand
+com/thirdspare/thirdsparemain/structures/Structure.java
+ com.thirdspare.thirdsparemain.structures.Structure
+ com.thirdspare.thirdsparemain.structures.Structure$1
+com/thirdspare/thirdsparemain/commands/teleportcommands/TeleSpawnCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.TeleSpawnCommand
+com/thirdspare/thirdsparemain/econ/TSMEconomy.java
+ com.thirdspare.thirdsparemain.econ.TSMEconomy
+com/thirdspare/thirdsparemain/commands/econcommands/AddPlayerBalance.java
+ com.thirdspare.thirdsparemain.commands.econcommands.AddPlayerBalance
+com/thirdspare/thirdsparemain/entities/User.java
+ com.thirdspare.thirdsparemain.entities.User
+com/thirdspare/thirdsparemain/chat/ChatManager.java
+ com.thirdspare.thirdsparemain.chat.ChatManager
+com/thirdspare/thirdsparemain/entities/customitems/BattleAxe.java
+ com.thirdspare.thirdsparemain.entities.customitems.BattleAxe
+com/thirdspare/thirdsparemain/listeners/SignListener.java
+ com.thirdspare.thirdsparemain.listeners.SignListener
+com/thirdspare/thirdsparemain/listeners/DeathListener.java
+ com.thirdspare.thirdsparemain.listeners.DeathListener
+com/thirdspare/thirdsparemain/inventories/Backpack.java
+ com.thirdspare.thirdsparemain.inventories.Backpack
+com/thirdspare/thirdsparemain/entities/customitems/CustomItemTemplate.java
+ com.thirdspare.thirdsparemain.entities.customitems.CustomItemTemplate
+com/thirdspare/thirdsparemain/commands/econcommands/Balance.java
+ com.thirdspare.thirdsparemain.commands.econcommands.Balance
+com/thirdspare/thirdsparemain/ThirdSpareMain.java
+ com.thirdspare.thirdsparemain.ThirdSpareMain
+com/thirdspare/thirdsparemain/listeners/JoinListener.java
+ com.thirdspare.thirdsparemain.listeners.JoinListener
+com/thirdspare/thirdsparemain/listeners/ItemPickUpListener.java
+ com.thirdspare.thirdsparemain.listeners.ItemPickUpListener
+com/thirdspare/thirdsparemain/listeners/ChatChannelListener.java
+ com.thirdspare.thirdsparemain.listeners.ChatChannelListener
+com/thirdspare/thirdsparemain/commands/ChannelCommands.java
+ com.thirdspare.thirdsparemain.commands.ChannelCommands
+com/thirdspare/thirdsparemain/commands/gameeventcommands/Dueling.java
+ com.thirdspare.thirdsparemain.commands.gameeventcommands.Dueling
+com/thirdspare/thirdsparemain/gameevents/Duel.java
+ com.thirdspare.thirdsparemain.gameevents.Duel
+ com.thirdspare.thirdsparemain.gameevents.Duel$1
+com/thirdspare/thirdsparemain/entities/customitems/NytherionHammer.java
+ com.thirdspare.thirdsparemain.entities.customitems.NytherionHammer
+com/thirdspare/thirdsparemain/utilities/ConfigSetup.java
+ com.thirdspare.thirdsparemain.utilities.ConfigSetup
+com/thirdspare/thirdsparemain/commands/econcommands/SetPlayerBalance.java
+ com.thirdspare.thirdsparemain.commands.econcommands.SetPlayerBalance

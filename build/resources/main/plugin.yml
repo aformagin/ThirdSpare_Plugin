@@ -1,0 +1,98 @@
+name: ThirdSpareMain
+version: '0.1'
+main: com.thirdspare.thirdsparemain.ThirdSpareMain
+description: Thirdspare Main Plugin -- Contains RPG+ Features
+api-version: 1.18
+author: auti117
+prefix: TSM
+softdepend:
+  - Vault
+commands:
+  roll:
+    description: Rolls a die! By default it is a d20. See usage for more info
+    usage: /roll [NUMBER 1 to 100]
+    permission: tsm.roll
+  listp:
+    description: List the players on the server
+    usage: /listp
+    permission: tsm.listp
+    aliases:
+      - list
+      - list_players
+  setspawn:
+    description: Sets the spawn of the world you are currently in.
+    usage: /setspawn
+    permission: tsm.spawn.setspawn
+  balance:
+    description: Displays your current balance
+    usage: /balance
+    aliases:
+      - bal
+      - balance
+      - money
+    permission: tsm.econ.bal
+  addbalance:
+    usage: /addbalance [target] [amount]
+    aliases:
+      - addbal
+      - moneyadd
+    permission: tsm.econ.bal_add
+  setbalance:
+    usage: /setbalance [target] [amount]
+    aliases:
+      - setbal
+      - moneyset
+    permission: tsm.econ.bal_set
+  chat:
+    description: Command used to join, leave or list chat channels
+    usage: /chat [join|leave|list] <channel>
+    aliases:
+      - ch
+    permission: tsm.chat
+  pay:
+    description: Pays a player
+    usage: /pay [target] [amount]
+    permission: tsm.econ.pay
+  countdown:
+    usage: countdown
+    permission: tsm.countdown
+  inv:
+    permission: tsm.inventory
+  test:
+    default: op
+  tpa:
+    description: Teleport Request
+    default: true
+  dump:
+    default: op
+
+permissions:
+  tsm.*:
+    description: Wildcard permission
+    default: op
+  tsm.econ.bal_add:
+    description: Allows adding to a players balance
+    default: op
+  tsm.econ.bal_set:
+    description: Sets the balance of the player
+    default: op
+  tsm.econ.bal:
+    description: Allows player to view balance
+    default: true
+  tsm.econ.pay:
+    description: Allows a player to transfer funds to another player
+    default: true
+  tsm.spawn.setspawn:
+    description: Allows player to set spawn for the world
+    default: op
+  tsm.roll:
+    description: Rolls die from 1 to 100
+    default: true
+  tsm.chat:
+    default: true
+  tsm.listp:
+    default: true
+  tsm.inventory:
+    default: true
+  tsm.countdown:
+    default: true
