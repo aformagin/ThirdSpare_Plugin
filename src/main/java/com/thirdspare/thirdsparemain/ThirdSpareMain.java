@@ -8,7 +8,6 @@ import com.thirdspare.thirdsparemain.chat.ChatManager;
 import com.thirdspare.thirdsparemain.commands.ChannelCommands;
 import com.thirdspare.thirdsparemain.commands.ListCommand;
 import com.thirdspare.thirdsparemain.commands.RollCommand;
-import com.thirdspare.thirdsparemain.commands.StructCommand;
 import com.thirdspare.thirdsparemain.commands.econcommands.AddPlayerBalance;
 import com.thirdspare.thirdsparemain.commands.econcommands.Balance;
 import com.thirdspare.thirdsparemain.commands.econcommands.SetPlayerBalance;
@@ -18,19 +17,17 @@ import com.thirdspare.thirdsparemain.entities.User;
 import com.thirdspare.thirdsparemain.entities.customitems.BattleAxe;
 import com.thirdspare.thirdsparemain.inventories.Backpack;
 import com.thirdspare.thirdsparemain.kotlin.commands.Countdown;
-import com.thirdspare.thirdsparemain.kotlin.commands.StatsDump;
 import com.thirdspare.thirdsparemain.kotlin.commands.OpenBackpack;
 import com.thirdspare.thirdsparemain.kotlin.commands.econcommands.Pay;
 import com.thirdspare.thirdsparemain.kotlin.commands.tpcommands.TPA;
 import com.thirdspare.thirdsparemain.listeners.*;
 import com.thirdspare.thirdsparemain.utilities.ConfigSetup;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-// FOR DUELING LOOK INTO ENTITY DAMAGE BY ENTITY EVENT to prevent other players from attacking
+
 public class ThirdSpareMain extends JavaPlugin {
     private ConfigSetup config;
     private TSMEconomy econ;
@@ -48,30 +45,34 @@ public class ThirdSpareMain extends JavaPlugin {
         super.onEnable();
         logger.info("ThirdSpareMain loading...");
 
-        config = new ConfigSetup(this);
+        /* Variable Initialization */
+        config = new ConfigSetup(this); //Configuration File Setup
+        econ = new TSMEconomy(this); //Base Economy Class
+        chatManager = new ChatManager(); //Base ChatManager Class
 
-
+        /* Initialize & Register Custom Recipes */
         BattleAxe ba = new BattleAxe(this);
-
 //        Bukkit.addRecipe(ba.getRecipe());
 
-        // Checking if required directories have been created
-        //Config Directory
-        if (config.isConfigDirCreated())
+        /* Plugin Configuration Setup
+         * - Checks for the existence of needed directories and creates if required
+         * - Generates default config files for player data and server config is the files don't exist
+         * already*/
+        if (config.isConfigDirCreated()) //Config Dir
             logger.info("-- Config Directory Exists...");
         else
             logger.info("-- Config Directory Now Created...");
-        //Data Directory
-        if (config.isDataDirCreated())
+
+        if (config.isDataDirCreated()) //Data Directory
             logger.info("-- Data Directory Exists...");
         else
             logger.info("-- Data Directory Now Created...");
-        //Creating config file
-        if (!config.createJSONConfig())
+
+        if (!config.createJSONConfig()) //Config File
             logger.warning("-- Config file exists or was not created\n" +
                     "-- Most likely nothing to worry about.");
-        //Creating player file
-        if (!config.createJSONPlayerData())
+
+        if (!config.createJSONPlayerData()) //Player File
             logger.warning("-- Data file exists or was not created\n" +
                     "-- Most likely nothing to worry about.");
         if (!config.createJSONChannelData())
@@ -79,10 +80,8 @@ public class ThirdSpareMain extends JavaPlugin {
                     "-- Most likely nothing to worry about.");
 
 
-        econ = new TSMEconomy(this);
-        chatManager = new ChatManager();
-        //Load required listeners
-        logger.info("-- Loading listeners...");
+        /* Registering all EventListeners */
+        logger.info("-- Registering EventListeners..."); //Output to console log that events are registering
         server.getPluginManager().registerEvents(new JoinListener(this), this);
         server.getPluginManager().registerEvents(new ItemPickUpListener(this), this);
         server.getPluginManager().registerEvents(new DeathListener(this), this);
@@ -90,29 +89,36 @@ public class ThirdSpareMain extends JavaPlugin {
         server.getPluginManager().registerEvents(new ChatChannelListener(this), this);
         server.getPluginManager().registerEvents(new Backpack(this), this);
 //        server.getPluginManager().registerEvents(new SignListener(this), this);
-        //load commands
-        getServer().getLogger().info("-- Loading commands...");
+
+
+        /* Setting CommandExecutors */
         /* TODO Commands
          *   - Request/Accept duel command
-         *   - Give special items command - based off of configurable items */
-        //noinspection ConstantConditions
+         *   - Give special items command - based off of configurable items
+         * */
+
+        getServer().getLogger().info("-- Loading commands...");
+
+        //Player based commands
         this.getCommand("roll").setExecutor(new RollCommand());
-        //noinspection ConstantConditions
         this.getCommand("listp").setExecutor(new ListCommand());
+        this.getCommand("inv").setExecutor(new OpenBackpack(this));
+        //Teleport commands
         this.getCommand("setspawn").setExecutor(new SetSpawnCommand());
+        this.getCommand("tpa").setExecutor(new TPA(this));
         //Econ commands
         this.getCommand("balance").setExecutor(new Balance(this));
         this.getCommand("addbalance").setExecutor(new AddPlayerBalance(this));
         this.getCommand("setbalance").setExecutor(new SetPlayerBalance(this));
         this.getCommand("pay").setExecutor(new Pay(this));
-
+        //Chat commands
         this.getCommand("chat").setExecutor(new ChannelCommands(this));
         this.getCommand("countdown").setExecutor(new Countdown(this));
-        this.getCommand("inv").setExecutor(new OpenBackpack(this));
 
-        //For testing purposes only
+
+
+        /* Register TEST commands here */
 //        this.getCommand("test").setExecutor(new StructCommand());
-        this.getCommand("tpa").setExecutor(new TPA(this));
 //        this.getCommand("dump").setExecutor(new StatsDump(this));
     }
 
