@@ -11,20 +11,21 @@ public class ChatChannel {
     private final ArrayList<Player> PLAYER_LIST;
     private ChatColor channelColor;
 
+    /* Default ChatChannel constructor - No colour set */
     public ChatChannel(String channelName, char prefix) {
+        //Initialization of name, prefix and players in list
         this.channelName = channelName;
         this.prefix = prefix;
-        //Initialize the list of players in the channel
         PLAYER_LIST = new ArrayList<>();
     }
 
+    /* Secondary ChatChannel constructor - Sets the colour of the chat channel */
     public ChatChannel(String channelName, char prefix, char channelColor) {
-        //Setting channel name, prefix and color
         this.channelName = channelName;
         this.prefix = prefix;
-        setChannelColor(channelColor);
-        //Initialize the list of players in the channel
         PLAYER_LIST = new ArrayList<>();
+        //Initializes the colour of the channel
+        setChannelColor(channelColor);
     }
 
     public ChatColor getChannelColor() {
@@ -37,38 +38,17 @@ public class ChatChannel {
 
     /**
      * setChannelColor - sets the channel color based on a passed color code
-     *
-     * @param colorCode - A color code represented by one of the following characters
-     *                  G - Green
-     *                  C - Aqua/Cyan
-     *                  B - Blue
-     *                  Y - Yellow
-     *                  R - Red
-     *                  M - Light Purple/Magenta
+     * @param colorCode - A color code represented by one of the following characters [G,C,B,Y,R,M]
      */
     public void setChannelColor(char colorCode) {
         switch (colorCode) {
-            case 'G':
-                this.channelColor = ChatColor.GREEN;
-                break;
-            case 'C':
-                this.channelColor = ChatColor.AQUA;
-                break;
-            case 'B':
-                this.channelColor = ChatColor.BLUE;
-                break;
-            case 'Y':
-                this.channelColor = ChatColor.YELLOW;
-                break;
-            case 'R':
-                this.channelColor = ChatColor.RED;
-                break;
-            case 'M':
-                this.channelColor = ChatColor.LIGHT_PURPLE;
-                break;
-            default:
-                this.channelColor = ChatColor.WHITE;
-                break;
+            case 'G' -> this.channelColor = ChatColor.GREEN;
+            case 'C' -> this.channelColor = ChatColor.AQUA;
+            case 'B' -> this.channelColor = ChatColor.BLUE;
+            case 'Y' -> this.channelColor = ChatColor.YELLOW;
+            case 'R' -> this.channelColor = ChatColor.RED;
+            case 'M' -> this.channelColor = ChatColor.LIGHT_PURPLE;
+            default -> this.channelColor = ChatColor.WHITE;
         }
     }
 
