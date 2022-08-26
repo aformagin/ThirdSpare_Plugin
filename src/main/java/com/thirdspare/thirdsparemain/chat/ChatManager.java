@@ -12,13 +12,11 @@ import java.util.HashMap;
 
 /* TODO - Have ability to be in more than one channel at once. (Needs testing) */
 public class ChatManager {
-    //List of players and their current channel
-    private HashMap<Player, String> playerChannel = new HashMap<>();
-
-    //Each channel has a list of players
-    private HashMap<String, ChatChannel> channelsList;
+    private final HashMap<Player, String> playerChannel = new HashMap<>();  //List of players and their current channel
+    private final HashMap<String, ChatChannel> channelsList; //holds the list of channels loaded from the configuration file
 
     public ChatManager() {
+        //Initializing the list of Channels loaded from config
         this.channelsList = new HashMap<>();
         //Loading the channel list from a JSON file
         loadChannelsFromFile();
@@ -29,37 +27,45 @@ public class ChatManager {
         Player player = user.getPlayer();
         //Using a temporary variable to set the name of the channel to uppercase
         String channel = channelName.toUpperCase();
-        //Made this more modular so that I can add more channels via config
+
         if (channelsList.containsKey(channel)) {
             ChatChannel cc = channelsList.get(channel); // This is used only for ease of getting name and prefix of the channel
             channelsList.get(channel).addPlayer(player);
             user.setChannelTalkingIn(channelsList.get(channel));
-            var msg = String.format("You have joined %s [%s] channel.", cc.getChannelName(), cc.getPrefix());
-            player.sendMessage(msg);
+
+            var joinChannelMsg = String.format("You have joined %s [%s] channel.", cc.getChannelName(), cc.getPrefix());
+            player.sendMessage(joinChannelMsg);
         }
     }
 
-
+    // TODO - Check if the below TODO is still valid and then clean up related code
     // TODO - Rework this method so it is compatible with current way of joining/leaving
     public void leaveChannel(User user, String channelName) {
+
         Player player = user.getPlayer();
         String channel = channelName.toUpperCase();
+
         if (channelsList.containsKey(channel)) {
             ChatChannel cc = channelsList.get(channel); // This is used only for ease of getting name and prefix of the channel
             if (cc.getChannelName().equalsIgnoreCase("global")) {
-                var msg = String.format("Cannot leave %s Channel.... Yet..", cc.getChannelName());
-                player.sendMessage(msg);
+                var unableToLeaveMsg = String.format("Cannot leave %s Channel.... Yet..", cc.getChannelName());
+                player.sendMessage(unableToLeaveMsg);
                 return;
             }
+
             channelsList.get(channel).removePlayer(player);
+
             channelsList.forEach((CHANNEL_NAME, CHANNEL_OBJECT) -> {
                 if (CHANNEL_OBJECT.getPlayersInChannel().contains(player)) {
                     user.setChannelTalkingIn(CHANNEL_OBJECT);
-                    var msg = String.format("You have left %s %s[%s] channel.",
+
+                    var leaveChannelMsg = String.format("You have left %s %s[%s] channel.",
                             cc.getChannelName(), cc.getChannelColor(), cc.getPrefix());
-                    var msg2 = String.format("Now talking in: %s", CHANNEL_OBJECT.getChannelName());
-                    player.sendMessage(msg);
-                    player.sendMessage(msg2);
+
+                    var nowTalkingInMsg = String.format("Now talking in: %s", CHANNEL_OBJECT.getChannelName());
+
+                    player.sendMessage(leaveChannelMsg);
+                    player.sendMessage(nowTalkingInMsg);
                 }
             });
         }
@@ -67,7 +73,9 @@ public class ChatManager {
     }
 
     public ArrayList<Player> getChannel(String chatChannelName) {
+
         var channel = chatChannelName.toUpperCase();
+
         if (channelsList.containsKey(channel))
             return channelsList.get(channel).getPlayersInChannel();
         else
