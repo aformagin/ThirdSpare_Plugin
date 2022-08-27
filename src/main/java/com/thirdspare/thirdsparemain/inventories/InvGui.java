@@ -18,8 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 public class InvGui implements Listener {
-    private final int MAX_SIZE = 54;
-    private final int MIN_SIZE = 9;
     private Inventory inv;
     private int size;
 
@@ -90,6 +88,9 @@ public class InvGui implements Listener {
      * @return Either the defined size or the DEFAULT size
      */
     public int validateSize(int size) {
+        //Hardcoded mins and maxes, so they can not be overridden by the config
+        int MAX_SIZE = 54;
+        int MIN_SIZE = 9;
         if (size < MIN_SIZE || size > MAX_SIZE) return this.size = 18;
         if (size % 9 != 0) return this.size = 18;
         else return this.size = size;
