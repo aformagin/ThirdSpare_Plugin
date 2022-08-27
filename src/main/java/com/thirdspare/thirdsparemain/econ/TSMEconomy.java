@@ -104,7 +104,6 @@ public class TSMEconomy {
         return true;
     }
 
-    //TODO - Read in configuration data from config file, this will set a number of different things
     public JSONObject readDataFile() {
         String jsonResponse = Utils.FileToJSONString(econDataLocation);
         return new JSONObject(jsonResponse);

@@ -22,7 +22,7 @@ public class InvGui implements Listener {
     private final int MIN_SIZE = 9;
     private Inventory inv;
     private int size;
-//    private HashMap<Character, ItemStack> itemMap;
+
     private final String title;
 
     public InvGui() {
@@ -47,7 +47,6 @@ public class InvGui implements Listener {
 
     public InvGui(int size, HashMap<Character, ItemStack> itemMap, String pattern, String title) {
         this.size = validateSize(size);
-//        this.itemMap = itemMap;
         this.title = title;
         inv = Bukkit.createInventory(null, size, Component.text(this.title));
         generatePatternedInventory(itemMap, pattern);
@@ -56,7 +55,7 @@ public class InvGui implements Listener {
     /**
      * openInventory - Opens the inventory to the selected player
      *
-     * @param entity The human entity that that you want to display the inventory to
+     * @param entity The human entity that you want to display the inventory to
      */
     public void openInventory(HumanEntity entity) {
         entity.openInventory(inv);
