@@ -94,7 +94,7 @@ public class JoinListener implements Listener {
         user = new User(player);
 
         //Make sure it does not have the filler text
-        if (!homeSerialized.equals("FILLER")) {
+        if (homeSerialized != null) {
             var deserializedHome = Location.deserialize((Map<String, Object>) homeSerialized);
             user.setHome(deserializedHome);
         }
@@ -162,10 +162,8 @@ public class JoinListener implements Listener {
             home = user.getHome().serialize();
 
         //TODO Test writing home to file
-        if (home != null)
-            leavingPlayerJson.put("home", home);
-        else
-            leavingPlayerJson.put("home", "FILLER");
+        leavingPlayerJson.put("home", home); //Will write as JSON null if location is not set by player
+
         leavingPlayerJson.put("backpack", items);
         leavingPlayerJson.put("balance", bal);
 

@@ -1,44 +1,44 @@
-com/thirdspare/thirdsparemain/commands/teleportcommands/TeleportToLocationCommand.java
- com.thirdspare.thirdsparemain.commands.teleportcommands.TeleportToLocationCommand
-com/thirdspare/thirdsparemain/groups/Guild.java
- com.thirdspare.thirdsparemain.groups.Guild
-com/thirdspare/thirdsparemain/groups/GroupTemplate.java
- com.thirdspare.thirdsparemain.groups.GroupTemplate
 com/thirdspare/thirdsparemain/commands/RollCommand.java
  com.thirdspare.thirdsparemain.commands.RollCommand
+com/thirdspare/thirdsparemain/commands/teleportcommands/TeleSpawnCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.TeleSpawnCommand
+com/thirdspare/thirdsparemain/groups/GroupTemplate.java
+ com.thirdspare.thirdsparemain.groups.GroupTemplate
+com/thirdspare/thirdsparemain/commands/teleportcommands/TeleportPlayerCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.TeleportPlayerCommand
 com/thirdspare/thirdsparemain/commands/CustomItemGiveCommand.java
  com.thirdspare.thirdsparemain.commands.CustomItemGiveCommand
-com/thirdspare/thirdsparemain/inventories/InvGui.java
- com.thirdspare.thirdsparemain.inventories.InvGui
 com/thirdspare/thirdsparemain/commands/ListCommand.java
  com.thirdspare.thirdsparemain.commands.ListCommand
+com/thirdspare/thirdsparemain/Zone.java
+ com.thirdspare.thirdsparemain.Zone
 com/thirdspare/thirdsparemain/utilities/Utils.java
  com.thirdspare.thirdsparemain.utilities.Utils
 com/thirdspare/thirdsparemain/structures/WarpStone.java
  com.thirdspare.thirdsparemain.structures.WarpStone
-com/thirdspare/thirdsparemain/Zone.java
- com.thirdspare.thirdsparemain.Zone
 com/thirdspare/thirdsparemain/structures/BlockLayer.java
  com.thirdspare.thirdsparemain.structures.BlockLayer
 com/thirdspare/thirdsparemain/commands/teleportcommands/SetSpawnCommand.java
  com.thirdspare.thirdsparemain.commands.teleportcommands.SetSpawnCommand
+com/thirdspare/thirdsparemain/commands/teleportcommands/TeleportToLocationCommand.java
+ com.thirdspare.thirdsparemain.commands.teleportcommands.TeleportToLocationCommand
 com/thirdspare/thirdsparemain/commands/StructCommand.java
  com.thirdspare.thirdsparemain.commands.StructCommand
 com/thirdspare/thirdsparemain/chat/ChatChannel.java
  com.thirdspare.thirdsparemain.chat.ChatChannel
 com/thirdspare/thirdsparemain/groups/GroupTypes.java
  com.thirdspare.thirdsparemain.groups.GroupTypes
-com/thirdspare/thirdsparemain/StandaloneFunctionTesster.java
- com.thirdspare.thirdsparemain.StandaloneFunctionTesster
-com/thirdspare/thirdsparemain/commands/teleportcommands/TeleportPlayerCommand.java
- com.thirdspare.thirdsparemain.commands.teleportcommands.TeleportPlayerCommand
+com/thirdspare/thirdsparemain/groups/Guild.java
+ com.thirdspare.thirdsparemain.groups.Guild
+com/thirdspare/thirdsparemain/inventories/InvGui.java
+ com.thirdspare.thirdsparemain.inventories.InvGui
 com/thirdspare/thirdsparemain/structures/Structure.java
  com.thirdspare.thirdsparemain.structures.Structure
  com.thirdspare.thirdsparemain.structures.Structure$1
-com/thirdspare/thirdsparemain/commands/teleportcommands/TeleSpawnCommand.java
- com.thirdspare.thirdsparemain.commands.teleportcommands.TeleSpawnCommand
 com/thirdspare/thirdsparemain/econ/TSMEconomy.java
  com.thirdspare.thirdsparemain.econ.TSMEconomy
+com/thirdspare/thirdsparemain/listeners/RespawnListener.java
+ com.thirdspare.thirdsparemain.listeners.RespawnListener
 com/thirdspare/thirdsparemain/commands/econcommands/AddPlayerBalance.java
  com.thirdspare.thirdsparemain.commands.econcommands.AddPlayerBalance
 com/thirdspare/thirdsparemain/entities/User.java

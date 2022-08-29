@@ -7,7 +7,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -31,8 +30,9 @@ public class DeathListener implements Listener {
         var loc = entity.getLocation(); //Location of the entity
         int rand = (int) (Math.random() * (100 + 1) + 0); //Math.random() * (max - min + 1) + min
         if (entity instanceof Zombie) {
-            if (rand <= 25)
-                loc.getWorld().dropItem(loc, currencyItem);
+            if (rand <= 25) {
+//                loc.getWorld().dropItem(loc, currencyItem);
+            }
         }
     }
 }

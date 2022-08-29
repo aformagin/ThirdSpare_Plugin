@@ -38,8 +38,6 @@ public class ChatManager {
         }
     }
 
-    // TODO - Check if the below TODO is still valid and then clean up related code
-    // TODO - Rework this method so it is compatible with current way of joining/leaving
     public void leaveChannel(User user, String channelName) {
 
         Player player = user.getPlayer();

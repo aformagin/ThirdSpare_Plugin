@@ -47,8 +47,7 @@ public class ThirdSpareMain extends JavaPlugin {
 
         /* Variable Initialization */
         config = new ConfigSetup(this); //Configuration File Setup
-        econ = new TSMEconomy(this); //Base Economy Class
-        chatManager = new ChatManager(); //Base ChatManager Class
+
 
         /* Initialize & Register Custom Recipes */
         BattleAxe ba = new BattleAxe(this);
@@ -78,7 +77,8 @@ public class ThirdSpareMain extends JavaPlugin {
         if (!config.createJSONChannelData())
             logger.warning("-- Chat Channel Data file exists or was not created\n" +
                     "-- Most likely nothing to worry about.");
-
+        econ = new TSMEconomy(this); //Base Economy Class
+        chatManager = new ChatManager(); //Base ChatManager Class
 
         /* Registering all EventListeners */
         logger.info("-- Registering EventListeners..."); //Output to console log that events are registering
