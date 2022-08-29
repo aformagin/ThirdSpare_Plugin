@@ -1,2 +1,9 @@
 /.idea/
 /build/
+/build/classes/
+/build/generated/
+/build/kotlin/
+/build/libs/
+/build/resources/
+/build/snapshot/
+/build/tmp/
