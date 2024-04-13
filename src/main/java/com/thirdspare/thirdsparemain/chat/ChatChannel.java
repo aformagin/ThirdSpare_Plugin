@@ -1,6 +1,6 @@
 package com.thirdspare.thirdsparemain.chat;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ public class ChatChannel {
     private final String channelName;
     private final char prefix;
     private final ArrayList<Player> PLAYER_LIST;
-    private ChatColor channelColor;
+    private NamedTextColor channelColor;
 
     /* Default ChatChannel constructor - No colour set */
     public ChatChannel(String channelName, char prefix) {
@@ -28,11 +28,11 @@ public class ChatChannel {
         setChannelColor(channelColor);
     }
 
-    public ChatColor getChannelColor() {
+    public NamedTextColor getChannelColor() {
         return channelColor;
     }
 
-    public void setChannelColor(ChatColor channelColor) {
+    public void setChannelColor(NamedTextColor channelColor) {
         this.channelColor = channelColor;
     }
 
@@ -42,13 +42,13 @@ public class ChatChannel {
      */
     public void setChannelColor(char colorCode) {
         switch (colorCode) {
-            case 'G' -> this.channelColor = ChatColor.GREEN;
-            case 'C' -> this.channelColor = ChatColor.AQUA;
-            case 'B' -> this.channelColor = ChatColor.BLUE;
-            case 'Y' -> this.channelColor = ChatColor.YELLOW;
-            case 'R' -> this.channelColor = ChatColor.RED;
-            case 'M' -> this.channelColor = ChatColor.LIGHT_PURPLE;
-            default -> this.channelColor = ChatColor.WHITE;
+            case 'G' -> this.channelColor = NamedTextColor.GREEN;
+            case 'C' -> this.channelColor = NamedTextColor.AQUA;
+            case 'B' -> this.channelColor = NamedTextColor.BLUE;
+            case 'Y' -> this.channelColor = NamedTextColor.YELLOW;
+            case 'R' -> this.channelColor = NamedTextColor.RED;
+            case 'M' -> this.channelColor = NamedTextColor.LIGHT_PURPLE;
+            default -> this.channelColor = NamedTextColor.WHITE;
         }
     }
 

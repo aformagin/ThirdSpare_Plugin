@@ -8,6 +8,7 @@ import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +39,6 @@ public class ChatChannelListener implements Listener, ChatRenderer {
 
     }
 
-
     @Override
     public @NotNull Component render(@NotNull Player player, @NotNull Component sourceDisplayName, @NotNull Component message, @NotNull Audience viewer) {
         return generateMessage(player, message);
@@ -54,7 +54,7 @@ public class ChatChannelListener implements Listener, ChatRenderer {
     private Component generateMessage(@NotNull Player player, @NotNull Component message) {
         User u = plugin.getOnlinePlayers().get(player.getUniqueId());
         char prefix = u.getChannelTalkingIn().getPrefix();
-        ChatColor c = u.getChannelTalkingIn().getChannelColor();
+        NamedTextColor c = u.getChannelTalkingIn().getChannelColor();
         var msg = String.format("&6&l[TSM] &r- %s[%s] &r%s", c,
                 prefix, player.getName());
         return Component.text( Utils.applyColour(msg) + " > ").append(message);
