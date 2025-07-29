@@ -13,3 +13,36 @@ ___
 - Code cleanup - It is needed to go through and clean up repeated code, as well as make it more readable
 - Create permissions for existing commands
 - Convert Java code to Kotlin
+
+# Configuration Notes
+
+### Chat Channel Configuration
+Inside of `TSM\data`, a `channels.json` file, which is where channels will be generated on first load and contain all custom channel data such
+as the name, the prefix and the color assigned. 
+Attached below is an example of the channel list array inside of `channels.json`
+> ### Character to Colour options for channel config
+> 'G' -> Green  
+> 'C' -> Aqua  
+> 'B' -> Blue  
+> 'Y' -> Yellow   
+> 'R' -> Red/Light Red  
+> 'M' -> Magenta/Light Purple    
+
+   
+   
+```
+{
+  "channelList": [
+    {
+      "name": "GLOBAL",
+      "prefix": "G",
+      "color": "G"
+    },
+    {
+      "name": "TRADE",
+      "prefix": "T",
+      "color": "R"
+    }
+  ]
+}
+```

@@ -6,8 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,23 +27,34 @@ public class SetSpawnCommand implements CommandExecutor {
                 player.getServer().getLogger().info(msg);
                 world.setSpawnLocation(loc);
 
-                var jsonResponse = Utils.FileToJSONString(configJSON);
-                JSONObject config = new JSONObject(jsonResponse);
-                JSONObject worldsObject = config.getJSONObject("worlds");
-                //player.getServer().getLogger().info(worldsObject.toString(2));
-                JSONArray spawnLocationArray = new JSONArray();
-                spawnLocationArray.put(world.getSpawnLocation().getX());
-                spawnLocationArray.put(world.getSpawnLocation().getY());
-                spawnLocationArray.put(world.getSpawnLocation().getZ());
-                spawnLocationArray.put(world.getSpawnLocation().getPitch());
-                spawnLocationArray.put(world.getSpawnLocation().getYaw());
-                //player.getServer().getLogger().info(spawnLocationArray.toString(2));
-                JSONObject worldJSONObject = new JSONObject();
-                worldJSONObject.put("spawnLocation", spawnLocationArray);
-                worldsObject.put(world.getName(), worldJSONObject);
-                config.put("worlds", worldsObject);
+                Gson gson = new Gson();
+                JsonObject config;
                 try {
-                    Utils.JsonToFile(config.toString(4), configJSON);
+                    config = Utils.readObjectFromFile(configJSON, JsonObject.class);
+                    if (config == null) {
+                        config = new JsonObject();
+                    }
+                } catch (IOException e) {
+                    config = new JsonObject();
+                }
+                JsonObject worldsObject = config.getAsJsonObject("worlds");
+                if (worldsObject == null) {
+                    worldsObject = new JsonObject();
+                }
+                //player.getServer().getLogger().info(gson.toJson(worldsObject));
+                JsonArray spawnLocationArray = new JsonArray();
+                spawnLocationArray.add(world.getSpawnLocation().getX());
+                spawnLocationArray.add(world.getSpawnLocation().getY());
+                spawnLocationArray.add(world.getSpawnLocation().getZ());
+                spawnLocationArray.add(world.getSpawnLocation().getPitch());
+                spawnLocationArray.add(world.getSpawnLocation().getYaw());
+                //player.getServer().getLogger().info(gson.toJson(spawnLocationArray));
+                JsonObject worldJSONObject = new JsonObject();
+                worldJSONObject.add("spawnLocation", spawnLocationArray);
+                worldsObject.add(world.getName(), worldJSONObject);
+                config.add("worlds", worldsObject);
+                try {
+                    Utils.writeObjectToFile(config, configJSON);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

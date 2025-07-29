@@ -1,6 +1,8 @@
 package com.thirdspare.thirdsparemain.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,15 +22,17 @@ public class RollCommand implements CommandExecutor {
                         int max = Integer.parseInt(strings[0]);
                         roll = (int) ((Math.random() * ( max- 1 + 1)) + 1);
                         player.getServer().getLogger().info("Roll is: "+ roll);
-                        player.sendMessage(ChatColor.GREEN + ChatColor.BOLD.toString() + "[TS Dice Roll] " + roll +
-                                "/" + max);
+                        player.sendMessage(Component.text("[TS Dice Roll] " + roll + "/" + max)
+                                .color(NamedTextColor.GREEN)
+                                .decorate(TextDecoration.BOLD));
                     }
                 }
 
                 else if(strings.length == 0){
                     roll = (int) ((Math.random() * (20 - 1 + 1)) + 1);
-                    player.sendMessage(ChatColor.GREEN + ChatColor.BOLD.toString() + "[TS Dice Roll] " + roll +
-                            "/20");
+                    player.sendMessage(Component.text("[TS Dice Roll] " + roll + "/20")
+                            .color(NamedTextColor.GREEN)
+                            .decorate(TextDecoration.BOLD));
                     return true;
                 }
                 else return false;

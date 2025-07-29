@@ -1,20 +1,25 @@
 package com.thirdspare.thirdsparemain.utilities;
 
+import com.google.gson.Gson;
 import com.thirdspare.thirdsparemain.ThirdSpareMain;
+import com.thirdspare.thirdsparemain.entities.data.*;
 import org.bukkit.World;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigSetup {
 
     ThirdSpareMain plugin;
+    private final Gson gson;
 
     public ConfigSetup(ThirdSpareMain plugin) {
         this.plugin = plugin;
+        this.gson = Utils.getGson();
     }
 
     /**
@@ -36,7 +41,7 @@ public class ConfigSetup {
     }
 
     /**
-     * createJSONConfig - Creates the Config file in a JSON format
+     * createJSONConfig - Creates the Config file in a JSON format using Gson
      * @return Returns FALSE if the method has to create the file
      */
     public boolean createJSONConfig() {
@@ -53,32 +58,31 @@ public class ConfigSetup {
                 e.printStackTrace();
             }
 
-
-            //Creating the world JSON object and everything attached
-            JSONObject configJSONObj = new JSONObject();
-            JSONObject worldsJSONObj = new JSONObject();
+            // Creating the world configuration data using POJOs
+            Map<String, WorldData> worldsMap = new HashMap<>();
             List<World> worlds = plugin.getServer().getWorlds();
 
             /*
-            Loops through each world, creating JSONObjects as well as
-            grabbing the world's x, y, z, pitch, yaw of each spawn point
+            Loops through each world, creating WorldData objects with
+            the world's x, y, z, pitch, yaw of each spawn point
             */
             for (World world : worlds) {
-                JSONArray spawnLocationArray = new JSONArray();
-                //Creating a new object for each world in case we want to store more data on it later
-                JSONObject tempWorld = new JSONObject();
-                spawnLocationArray.put(world.getSpawnLocation().getX());
-                spawnLocationArray.put(world.getSpawnLocation().getY());
-                spawnLocationArray.put(world.getSpawnLocation().getZ());
-                spawnLocationArray.put(world.getSpawnLocation().getPitch());
-                spawnLocationArray.put(world.getSpawnLocation().getYaw());
-                tempWorld.put("spawnLocation", spawnLocationArray);
-                worldsJSONObj.put(world.getName(), tempWorld);
+                List<Double> spawnLocationArray = new ArrayList<>();
+                spawnLocationArray.add(world.getSpawnLocation().getX());
+                spawnLocationArray.add(world.getSpawnLocation().getY());
+                spawnLocationArray.add(world.getSpawnLocation().getZ());
+                spawnLocationArray.add((double) world.getSpawnLocation().getPitch());
+                spawnLocationArray.add((double) world.getSpawnLocation().getYaw());
+                
+                WorldData worldData = new WorldData(spawnLocationArray);
+                worldsMap.put(world.getName(), worldData);
             }
-            configJSONObj.put("worlds", worldsJSONObj);
-            // Writing file to disk
+            
+            ConfigData configData = new ConfigData(worldsMap);
+            
+            // Writing file to disk using Gson
             try {
-                Utils.JsonToFile(configJSONObj.toString(2), configFile);
+                Utils.writeObjectToFile(configData, configFile);
                 plugin.getLogger().info("TSM -- JSON CONFIG CREATED");
                 return true;
             } catch (IOException e) {
@@ -89,7 +93,7 @@ public class ConfigSetup {
     }
 
     /**
-     * createJSONPlayerData - Creates the PlayerData file in a JSON format
+     * createJSONPlayerData - Creates the PlayerData file in a JSON format using Gson
      * @return Returns FALSE of the method has to create the file
      */
     public boolean createJSONPlayerData() {
@@ -104,15 +108,16 @@ public class ConfigSetup {
                 e.printStackTrace();
             }
 
-
-            JSONObject playerDataJSON = new JSONObject();
-            JSONObject defaultData = new JSONObject();
-            defaultData.put("name", "test_player");
-
-            playerDataJSON.put("FAKEUUID", defaultData);
+            // Creating default player data using POJOs
+            Map<String, PlayerData> playersMap = new HashMap<>();
+            
+            PlayerData defaultPlayerData = new PlayerData();
+            defaultPlayerData.setName("test_player");
+            
+            playersMap.put("FAKEUUID", defaultPlayerData);
 
             try {
-                Utils.JsonToFile(playerDataJSON.toString(4), playerData);
+                Utils.writeObjectToFile(playersMap, playerData);
                 plugin.getLogger().info("TSM -- Player Data JSON created");
                 return true;
             } catch (IOException e) {
@@ -123,7 +128,7 @@ public class ConfigSetup {
     }
 
     /**
-     * createJSONChannelData - Creates the channel data file if it has not been created before
+     * createJSONChannelData - Creates the channel data file if it has not been created before using Gson
      * @return Returns FALSE if the file has to be created by the method
      */
     public boolean createJSONChannelData() {
@@ -138,28 +143,21 @@ public class ConfigSetup {
                 e.printStackTrace();
             }
 
-            //Creating the default JSON Objects to be inserted into the file
-            JSONObject channelDataObject = new JSONObject();
-
-            //Channel Object
-            JSONObject defaultChannel = new JSONObject();
-            defaultChannel.put("name", "GLOBAL");
-            defaultChannel.put("prefix", "G");
-            defaultChannel.put("color", "G");
-            //The Json array that holds the list of channel objects
-            JSONArray channelArray = new JSONArray();
-            channelArray.put(defaultChannel);
-            channelDataObject.put("channel_list", channelArray);
+            // Creating the default channel data using POJOs
+            ChannelData defaultChannel = new ChannelData("GLOBAL", "G", "G");
+            
+            List<ChannelData> channelList = new ArrayList<>();
+            channelList.add(defaultChannel);
+            
+            ChannelListData channelListData = new ChannelListData(channelList);
 
             try {
-                Utils.JsonToFile(channelDataObject.toString(4), channelData);
+                Utils.writeObjectToFile(channelListData, channelData);
                 plugin.getLogger().info("TSM -- Channel Data JSON created");
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
         return false;
     }

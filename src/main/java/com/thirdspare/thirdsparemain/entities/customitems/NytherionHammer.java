@@ -56,13 +56,12 @@ public class NytherionHammer extends CustomItemTemplate {
         // Setting item attack damage and speed
         AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", dmgAmount,
                 AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-        im.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+        im.addAttributeModifier(Attribute.ATTACK_DAMAGE, modifier);
 
 
         AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", spdAmount,
                 AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-        im.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier2);
-
+        im.addAttributeModifier(Attribute.ATTACK_SPEED, modifier2);
         // Setting meta of item
         item.setItemMeta(im);
 
