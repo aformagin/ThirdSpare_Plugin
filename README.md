@@ -8,6 +8,8 @@ plugin aims to replace an essential, economy, backpack, and friend system plugin
 (that is yet to come lol) and in the future being more modular.
 
 
+Currently the plugin is built against ***Paper 1.21.6 R01 Snapshot***
+
 ## TO-DO
 ___
 - Code cleanup - It is needed to go through and clean up repeated code, as well as make it more readable
