@@ -19,13 +19,17 @@ import java.io.IOException;
 import java.io.EOFException;
 import java.lang.reflect.Type;
 import java.util.Scanner;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Utils {
     /* Public "Global" variables to make life a little easier */
 
-    //Location of files
+    //Legacy file locations (deprecated - use getPluginFile methods instead)
+    @Deprecated
     public static final String PLAYERS_FILE = "plugins" + File.separator + "TSM"+ File.separator + "data"+ File.separator + "players.json";
+    @Deprecated
     public static final String CONFIG_FILE = "plugins" + File.separator + "TSM"+ File.separator + "configs"+ File.separator + "config.json";
+    @Deprecated
     public static final String CHANNELS_FILE = "plugins" + File.separator + "TSM" + File.separator + "data"+ File.separator + "channels.json";
 
     //Link to resource pack
@@ -193,6 +197,43 @@ public class Utils {
             e.printStackTrace();
         }
         return jsonResponse.toString();
+    }
+
+    /**
+     * Gets a File object for a file in the plugin's data folder (Paper standard)
+     * @param plugin The plugin instance
+     * @param filename The filename to get
+     * @return File object pointing to the file in plugin data folder
+     */
+    public static File getPluginFile(JavaPlugin plugin, String filename) {
+        return new File(plugin.getDataFolder(), filename);
+    }
+
+    /**
+     * Gets the players.json file in the plugin's data folder
+     * @param plugin The plugin instance
+     * @return File object for players.json
+     */
+    public static File getPlayersFile(JavaPlugin plugin) {
+        return getPluginFile(plugin, "players.json");
+    }
+
+    /**
+     * Gets the config.json file in the plugin's data folder
+     * @param plugin The plugin instance
+     * @return File object for config.json
+     */
+    public static File getConfigFile(JavaPlugin plugin) {
+        return getPluginFile(plugin, "config.json");
+    }
+
+    /**
+     * Gets the channels.json file in the plugin's data folder
+     * @param plugin The plugin instance
+     * @return File object for channels.json
+     */
+    public static File getChannelsFile(JavaPlugin plugin) {
+        return getPluginFile(plugin, "channels.json");
     }
 
     /**

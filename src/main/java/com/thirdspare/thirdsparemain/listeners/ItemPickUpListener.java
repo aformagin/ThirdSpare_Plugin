@@ -2,7 +2,8 @@ package com.thirdspare.thirdsparemain.listeners;
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,8 +35,9 @@ public class ItemPickUpListener implements Listener {
             currencyItem.setAmount(item.getAmount());
             if (item.equals(currencyItem)) { //Check for proper meta data
                 event.getItem().remove();
-                var msg = String.format("%s%s [ ! ] %sBalance has been added. x%d",
-                        ChatColor.GOLD, ChatColor.BOLD, ChatColor.GREEN, item.getAmount());
+                // Create message using Adventure API
+                Component msg = Component.text("[ ! ] ", NamedTextColor.GOLD, TextDecoration.BOLD)
+                        .append(Component.text("Balance has been added. x" + item.getAmount(), NamedTextColor.GREEN));
                 player.sendMessage(msg);
                 /* TODO Add new balance to data file for this player */
                 event.setCancelled(true);

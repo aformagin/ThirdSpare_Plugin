@@ -2,17 +2,16 @@ package com.thirdspare.thirdsparemain.entities.customitems;
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class NytherionHammer extends CustomItemTemplate {
     // The model ID attached in the custom resource pack
@@ -34,18 +33,13 @@ public class NytherionHammer extends CustomItemTemplate {
         // Assigning model id to the item
         im.setCustomModelData(MODEL_ID);
 
-        // Creating the name string and setting the display name
-        var name = String.format("%sNytherion Hammer", ChatColor.GREEN);
-        im.displayName(Component.text(name));
+        // Creating the display name using Adventure API
+        im.displayName(Component.text("Nytherion Hammer").color(NamedTextColor.GREEN));
 
-
-        // Item Lore to be assigned
+        // Item Lore using Adventure API
         // TODO Flavour text
-
-        String loreMsg2 = String.format("%sAttack Damage: %.2f", ChatColor.BLUE, newDmg); // Attack Damage
-        String loreMsg3 = String.format("%sAttack Speed: %.2f", ChatColor.BLUE, newSpeed); // Attack Speed
-        var lore3 = Component.text(loreMsg3);
-        var lore4 = Component.text(loreMsg2);
+        var lore3 = Component.text(String.format("Attack Speed: %.2f", newSpeed)).color(NamedTextColor.BLUE);
+        var lore4 = Component.text(String.format("Attack Damage: %.2f", newDmg)).color(NamedTextColor.BLUE);
         ArrayList<Component> loreList = new ArrayList<>();
         // Adding lore to loreList
         loreList.add(lore3);
@@ -53,14 +47,15 @@ public class NytherionHammer extends CustomItemTemplate {
         // Assigning lore to item
         im.lore(loreList);
 
-        // Setting item attack damage and speed
-        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", dmgAmount,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        // Create AttributeModifiers using new NamespacedKey-based API
+        NamespacedKey attackDamageKey = new NamespacedKey(plugin, "nytherion_hammer_attack_damage");
+        AttributeModifier modifier = new AttributeModifier(attackDamageKey, dmgAmount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND);
         im.addAttributeModifier(Attribute.ATTACK_DAMAGE, modifier);
 
-
-        AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", spdAmount,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        NamespacedKey attackSpeedKey = new NamespacedKey(plugin, "nytherion_hammer_attack_speed");
+        AttributeModifier modifier2 = new AttributeModifier(attackSpeedKey, spdAmount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND);
         im.addAttributeModifier(Attribute.ATTACK_SPEED, modifier2);
         // Setting meta of item
         item.setItemMeta(im);

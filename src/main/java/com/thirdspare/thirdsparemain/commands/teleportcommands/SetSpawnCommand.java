@@ -1,5 +1,6 @@
 package com.thirdspare.thirdsparemain.commands.teleportcommands;
 
+import com.thirdspare.thirdsparemain.ThirdSpareMain;
 import com.thirdspare.thirdsparemain.utilities.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +15,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class SetSpawnCommand implements CommandExecutor {
-    private final File configJSON = new File("plugins/TSM/configs/config.json");
+    private final ThirdSpareMain plugin;
+
+    public SetSpawnCommand(ThirdSpareMain plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, Command command, String s, String[] strings) {
@@ -27,6 +32,8 @@ public class SetSpawnCommand implements CommandExecutor {
                 player.getServer().getLogger().info(msg);
                 world.setSpawnLocation(loc);
 
+                // Use Paper's data folder for config file
+                File configJSON = Utils.getConfigFile(plugin);
                 Gson gson = new Gson();
                 JsonObject config;
                 try {

@@ -7,6 +7,7 @@ import com.thirdspare.thirdsparemain.entities.data.ChannelListData;
 import com.thirdspare.thirdsparemain.utilities.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,11 +18,14 @@ import java.util.HashMap;
 public class ChatManager {
     private final HashMap<Player, String> playerChannel = new HashMap<>();  //List of players and their current channel
     private final HashMap<String, ChatChannel> channelsList; //holds the list of channels loaded from the configuration file
+    private final JavaPlugin plugin; //Plugin instance for Paper data folder access
 
-    public ChatManager() {
+    public ChatManager(JavaPlugin plugin) {
+        //Store plugin instance for data folder access
+        this.plugin = plugin;
         //Initializing the list of Channels loaded from config
         this.channelsList = new HashMap<>();
-        //Loading the channel list from a JSON file
+        //Loading the channel list from a JSON file using Paper standards
         loadChannelsFromFile();
     }
 
@@ -92,23 +96,36 @@ public class ChatManager {
 
     public void loadChannelsFromFile() {
         try {
-            ChannelListData channelListData = Utils.readObjectFromFile(new File(Utils.CHANNELS_FILE), ChannelListData.class);
+            // Use Paper's data folder for channels.json file
+            File channelsFile = Utils.getChannelsFile(plugin);
+            ChannelListData channelListData = Utils.readObjectFromFile(channelsFile, ChannelListData.class);
             
             if (channelListData != null && channelListData.getChannelList() != null) {
+                plugin.getLogger().info("TSM -- Loading " + channelListData.getChannelList().size() + " channels from configuration");
                 for (ChannelData channelData : channelListData.getChannelList()) {
                     String channelName = channelData.getName();
                     String channelPrefix = channelData.getPrefix();
                     String channelColor = channelData.getColor();
 
                     ChatChannel chatChannel = new ChatChannel(channelName, channelPrefix.charAt(0), channelColor.charAt(0));
-                    channelsList.put(channelName, chatChannel);
+                    channelsList.put(channelName.toUpperCase(), chatChannel);
+                    plugin.getLogger().info("TSM -- Loaded channel: " + channelName + " [" + channelPrefix + "] (" + channelColor + ")");
                 }
+            } else {
+                plugin.getLogger().warning("TSM -- Channel configuration file is empty or corrupted, creating default channel");
+                createDefaultChannel();
             }
         } catch (IOException e) {
             // Handle error or create default channel
-            ChatChannel defaultChannel = new ChatChannel("GLOBAL", 'G', 'G');
-            channelsList.put("GLOBAL", defaultChannel);
+            plugin.getLogger().warning("TSM -- Could not load channels from file: " + e.getMessage());
+            plugin.getLogger().warning("TSM -- Creating default GLOBAL channel");
+            createDefaultChannel();
         }
+    }
+
+    private void createDefaultChannel() {
+        ChatChannel defaultChannel = new ChatChannel("GLOBAL", 'G', 'G');
+        channelsList.put("GLOBAL", defaultChannel);
     }
 
 }

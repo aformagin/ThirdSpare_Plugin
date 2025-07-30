@@ -7,12 +7,11 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
-import java.util.UUID;
 // TODO - Clean this up
 public class BattleAxe extends CustomItemTemplate{
 
@@ -45,13 +44,15 @@ public class BattleAxe extends CustomItemTemplate{
         im.lore(loreList);
 
 
-        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", dmgAmount,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        // Create AttributeModifiers using new NamespacedKey-based API
+        NamespacedKey attackDamageKey = new NamespacedKey(plugin, "battle_axe_attack_damage");
+        AttributeModifier modifier = new AttributeModifier(attackDamageKey, dmgAmount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND);
         im.addAttributeModifier(Attribute.ATTACK_DAMAGE, modifier);
 
-
-        AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", spdAmount,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        NamespacedKey attackSpeedKey = new NamespacedKey(plugin, "battle_axe_attack_speed");
+        AttributeModifier modifier2 = new AttributeModifier(attackSpeedKey, spdAmount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND);
         im.addAttributeModifier(Attribute.ATTACK_SPEED, modifier2);
         item.setItemMeta(im);
 

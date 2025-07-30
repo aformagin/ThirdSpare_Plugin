@@ -17,7 +17,7 @@ public class TSMEconomy {
 
     public TSMEconomy(ThirdSpareMain plugin) {
         this.plugin = plugin;
-        this.econDataLocation = new File(Utils.CONFIG_FILE);
+        this.econDataLocation = Utils.getConfigFile(plugin);
     }
 
     /**

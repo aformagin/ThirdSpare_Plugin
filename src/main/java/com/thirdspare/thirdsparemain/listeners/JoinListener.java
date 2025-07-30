@@ -31,7 +31,6 @@ import java.util.UUID;
 
 public class JoinListener implements Listener {
 
-    private final File playerFile = new File(Utils.PLAYERS_FILE);
     private final Gson gson;
     ThirdSpareMain plugin;
 
@@ -59,6 +58,8 @@ public class JoinListener implements Listener {
 
         // Enhanced JSON loading with comprehensive error recovery for player join
         // Handles empty files, corrupted JSON, and I/O errors gracefully
+        // Now uses Paper's standard data folder
+        File playerFile = Utils.getPlayersFile(plugin);
         Type playerMapType = new TypeToken<Map<String, PlayerData>>(){}.getType();
         Map<String, PlayerData> playersMap;
         
@@ -70,6 +71,7 @@ public class JoinListener implements Listener {
             }
         } catch (IOException e) {
             plugin.getLogger().severe("TSM -- Failed to read player data file on join: " + e.getMessage());
+            plugin.getLogger().info("TSM -- Player file location: " + playerFile.getAbsolutePath());
             plugin.getLogger().warning("TSM -- Using empty player data structure for this session");
             playersMap = new HashMap<>();
         }
@@ -142,12 +144,7 @@ public class JoinListener implements Listener {
 
         // Enhanced User validation and storage with error recovery
         // Ensures User object is properly created and stored in online players map
-        if (user == null) {
-            plugin.getLogger().severe("TSM -- CRITICAL ERROR: User object is null for player " + player.getName());
-            player.kick(Component.text("Failed to load player data. Please contact an administrator."));
-            return;
-        }
-        
+
         try {
             plugin.insertOnlinePlayer(player.getUniqueId(), user);
             
@@ -200,6 +197,8 @@ public class JoinListener implements Listener {
 
         // Enhanced JSON loading with comprehensive error recovery for player quit
         // Handles empty files, corrupted JSON, and I/O errors gracefully
+        // Now uses Paper's standard data folder
+        File playerFile = Utils.getPlayersFile(plugin);
         Type playerMapType = new TypeToken<Map<String, PlayerData>>(){}.getType();
         Map<String, PlayerData> playersMap;
         
@@ -211,6 +210,7 @@ public class JoinListener implements Listener {
             }
         } catch (IOException e) {
             plugin.getLogger().severe("TSM -- Failed to read player data file on quit: " + e.getMessage());
+            plugin.getLogger().info("TSM -- Player file location: " + playerFile.getAbsolutePath());
             plugin.getLogger().warning("TSM -- Player data may not be saved properly this session");
             playersMap = new HashMap<>();
         }

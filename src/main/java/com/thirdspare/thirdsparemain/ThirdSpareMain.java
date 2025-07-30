@@ -45,40 +45,34 @@ public class ThirdSpareMain extends JavaPlugin {
         super.onEnable();
         logger.info("ThirdSpareMain loading...");
 
-        /* Variable Initialization */
-        config = new ConfigSetup(this); //Configuration File Setup
+        /* Plugin Configuration Setup using Paper standards
+         * - Uses getDataFolder() for plugin data directory
+         * - Uses saveResource() to copy default files from resources
+         * - Creates necessary data files in plugin data folder */
+        
+        // Ensure plugin data folder exists
+        if (!getDataFolder().exists()) {
+            getDataFolder().mkdirs();
+            logger.info("-- Plugin data folder created at: " + getDataFolder().getAbsolutePath());
+        }
+        
+        // Save default configuration files using Paper's resource system
+        saveResource("channels.json", false); // false = don't replace if exists
+        logger.info("-- Default configuration files ensured");
 
+        /* Variable Initialization */
+        config = new ConfigSetup(this); //Configuration File Setup - updated to use Paper standards
+
+        /* Initialize default data files if they don't exist */
+        config.createJSONPlayerDataIfMissing();
+        config.createJSONConfigIfMissing();
 
         /* Initialize & Register Custom Recipes */
         BattleAxe ba = new BattleAxe(this);
 //        Bukkit.addRecipe(ba.getRecipe());
 
-        /* Plugin Configuration Setup
-         * - Checks for the existence of needed directories and creates if required
-         * - Generates default config files for player data and server config is the files don't exist
-         * already*/
-        if (config.isConfigDirCreated()) //Config Dir
-            logger.info("-- Config Directory Exists...");
-        else
-            logger.info("-- Config Directory Now Created...");
-
-        if (config.isDataDirCreated()) //Data Directory
-            logger.info("-- Data Directory Exists...");
-        else
-            logger.info("-- Data Directory Now Created...");
-
-        if (!config.createJSONConfig()) //Config File
-            logger.warning("-- Config file exists or was not created\n" +
-                    "-- Most likely nothing to worry about.");
-
-        if (!config.createJSONPlayerData()) //Player File
-            logger.warning("-- Data file exists or was not created\n" +
-                    "-- Most likely nothing to worry about.");
-        if (!config.createJSONChannelData())
-            logger.warning("-- Chat Channel Data file exists or was not created\n" +
-                    "-- Most likely nothing to worry about.");
         econ = new TSMEconomy(this); //Base Economy Class
-        chatManager = new ChatManager(); //Base ChatManager Class
+        chatManager = new ChatManager(this); //Base ChatManager Class with Paper data folder support
 
         /* Registering all EventListeners */
         logger.info("-- Registering EventListeners..."); //Output to console log that events are registering
@@ -104,7 +98,7 @@ public class ThirdSpareMain extends JavaPlugin {
         this.getCommand("listp").setExecutor(new ListCommand());
         this.getCommand("inv").setExecutor(new OpenBackpack(this));
         //Teleport commands
-        this.getCommand("setspawn").setExecutor(new SetSpawnCommand());
+        this.getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
         this.getCommand("tpa").setExecutor(new TPA(this));
         //Econ commands
         this.getCommand("balance").setExecutor(new Balance(this));

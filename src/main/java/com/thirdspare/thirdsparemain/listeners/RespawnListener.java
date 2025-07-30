@@ -16,14 +16,11 @@ public class RespawnListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         var world = event.getPlayer().getWorld();
         var player = event.getPlayer();
-        if (event.isBedSpawn()) {
-            if (player.getBedSpawnLocation() != null) {
-                event.setRespawnLocation(world.getSpawnLocation());
-            } else {
-                event.setRespawnLocation(player.getBedSpawnLocation());
-            }
+        
+        if (player.getRespawnLocation() != null) {
+            event.setRespawnLocation(player.getRespawnLocation());
+        } else {
+            event.setRespawnLocation(world.getSpawnLocation());
         }
-
-
     }
 }

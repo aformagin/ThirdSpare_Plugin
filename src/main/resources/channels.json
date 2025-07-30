@@ -1,0 +1,24 @@
+{
+  "channelList": [
+    {
+      "name": "GLOBAL",
+      "prefix": "G",
+      "color": "G"
+    },
+    {
+      "name": "LOCAL",
+      "prefix": "L",
+      "color": "Y"
+    },
+    {
+      "name": "TRADE",
+      "prefix": "T",
+      "color": "C"
+    },
+    {
+      "name": "ADMIN",
+      "prefix": "A",
+      "color": "R"
+    }
+  ]
+}
