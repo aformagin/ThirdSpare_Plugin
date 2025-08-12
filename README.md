@@ -19,7 +19,7 @@ ___
 # Configuration Notes
 
 ### Chat Channel Configuration
-Inside of `TSM\data`, a `channels.json` file, which is where channels will be generated on first load and contain all custom channel data such
+Inside of `ThirdSpareMain\data`, a `channels.json` file, which is where channels will be generated on first load and contain all custom channel data such
 as the name, the prefix and the color assigned. 
 Attached below is an example of the channel list array inside of `channels.json`
 > ### Character to Colour options for channel config
