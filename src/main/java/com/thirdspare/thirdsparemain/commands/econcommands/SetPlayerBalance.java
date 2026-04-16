@@ -1,7 +1,9 @@
 package com.thirdspare.thirdsparemain.commands.econcommands;
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,10 +35,12 @@ public class SetPlayerBalance implements CommandExecutor {
                         return false;
                     double amount = Double.parseDouble(strings[1]);
                     if(plugin.getTSMEconomy().setPlayerBalance(target, amount)){
-                        var msg = String.format("%s%s[ ! ] %s%.2f -- %s's New Account Value.",
-                                ChatColor.GOLD, ChatColor.BOLD, ChatColor.GREEN, amount, target.getName());
                         assert player != null;
-                        player.sendMessage(msg);
+                        player.sendMessage(Component.text("[ ! ] ")
+                                .color(NamedTextColor.GOLD)
+                                .decorate(TextDecoration.BOLD)
+                                .append(Component.text(String.format("%.2f -- %s's New Account Value.", amount, target.getName()))
+                                        .color(NamedTextColor.GREEN)));
                         return true;
                     }
                     else

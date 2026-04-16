@@ -15,8 +15,6 @@ public class User {
 
     protected Player player; // Represents the given player/user
     private Backpack backpack;
-    private Inventory backpackInv; // TODO remove if unneeded
-
 
     //Duels
     protected Player against;
@@ -33,7 +31,7 @@ public class User {
     protected double balance;
 
     //Groups & Guilds
-    protected Guild guild; //Too be used later
+    protected Guild guild; //To be used later
 
     public User(Player player) {
         this.player = player;
@@ -119,7 +117,6 @@ public class User {
         return "User{" +
                 "player=" + player +
                 ", backpack=" + backpack +
-                ", backpackInv=" + backpackInv +
                 ", against=" + against +
                 ", inDuel=" + inDuel +
                 ", channelTalkingIn=" + channelTalkingIn +

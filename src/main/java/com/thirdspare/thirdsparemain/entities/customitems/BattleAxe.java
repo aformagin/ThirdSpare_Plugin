@@ -2,17 +2,16 @@ package com.thirdspare.thirdsparemain.entities.customitems;
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
-import java.util.UUID;
 // TODO - Clean this up
 public class BattleAxe extends CustomItemTemplate{
 
@@ -23,38 +22,38 @@ public class BattleAxe extends CustomItemTemplate{
 
         im.setCustomModelData(1337);
 
-        var name = String.format("%sBattle Axe", ChatColor.GREEN);
-        im.displayName(Component.text(name));
-        String msg = String.format("%sA more durable axe, more suited for dispatching",
-                ChatColor.WHITE);
-        String msg2 = String.format("%senemies %sheads than tree branches.", ChatColor.RED, ChatColor.WHITE);
-        var lore = Component.text(msg);
-        var lore2 = Component.text(msg2);
+        im.displayName(Component.text("Battle Axe").color(NamedTextColor.GREEN));
+        var lore = Component.text("A more durable axe, more suited for dispatching")
+                .color(NamedTextColor.WHITE);
+        var lore2 = Component.text("enemies ").color(NamedTextColor.RED)
+                .append(Component.text("heads than tree branches.").color(NamedTextColor.WHITE));
         double dmgAmount = 10;
         double spdAmount = -2.0;
         double newDmg = baseDmg + dmgAmount;
         double newSpeed = baseSpeed + spdAmount;
 
-        String loreMsg2 = String.format("%sAttack Damage: %.2f", ChatColor.BLUE, newDmg); // Attack Damage
-        String loreMsg3 = String.format("%sAttack Speed: %.2f", ChatColor.BLUE, newSpeed); // Attack Speed
-        var lore3 = Component.text(loreMsg3);
-        var lore4 = Component.text(loreMsg2);
+        var loreMsg2 = Component.text(String.format("Attack Damage: %.2f", newDmg))
+                .color(NamedTextColor.BLUE); // Attack Damage
+        var loreMsg3 = Component.text(String.format("Attack Speed: %.2f", newSpeed))
+                .color(NamedTextColor.BLUE); // Attack Speed
         ArrayList<Component> loreList = new ArrayList<>();
         loreList.add(lore);
         loreList.add(lore2);
-        loreList.add(lore3);
-        loreList.add(lore4);
+        loreList.add(loreMsg3);
+        loreList.add(loreMsg2);
         im.lore(loreList);
 
 
-        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", dmgAmount,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-        im.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+        // Create AttributeModifiers using new NamespacedKey-based API
+        NamespacedKey attackDamageKey = new NamespacedKey(plugin, "battle_axe_attack_damage");
+        AttributeModifier modifier = new AttributeModifier(attackDamageKey, dmgAmount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND);
+        im.addAttributeModifier(Attribute.ATTACK_DAMAGE, modifier);
 
-
-        AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", spdAmount,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-        im.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier2);
+        NamespacedKey attackSpeedKey = new NamespacedKey(plugin, "battle_axe_attack_speed");
+        AttributeModifier modifier2 = new AttributeModifier(attackSpeedKey, spdAmount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND);
+        im.addAttributeModifier(Attribute.ATTACK_SPEED, modifier2);
         item.setItemMeta(im);
 
 

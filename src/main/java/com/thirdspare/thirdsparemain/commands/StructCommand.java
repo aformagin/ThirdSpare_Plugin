@@ -10,8 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class StructCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (commandSender instanceof Player) {
-            var player =(Player) commandSender;
+        if (commandSender instanceof Player player) {
             WarpStone ws = new WarpStone();
             ws.generateOnPlayer(player);
         } else
