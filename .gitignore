@@ -1,4 +1,10 @@
 /.idea/
+*.iml
+/.vscode/
+/.claude/
+.DS_Store
+Thumbs.db
+desktop.ini
 /build/
 /build/classes/
 /build/generated/
