@@ -1,6 +1,7 @@
 package com.thirdspare.thirdsparemain.kotlin.commands
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain
+import net.kyori.adventure.text.Component
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -10,6 +11,10 @@ class OpenBackpack(val plugin: ThirdSpareMain) : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) return false
         if (command.name != "inv") return false
+        if (!sender.hasPermission("tsm.inventory")) {
+            sender.sendMessage(Component.text("You do not have permission to use this command."))
+            return true
+        }
         val bp = plugin.onlinePlayers[sender.uniqueId]?.backpack
         bp?.openInventory(sender)
 //        val pattern = "i___i___i"

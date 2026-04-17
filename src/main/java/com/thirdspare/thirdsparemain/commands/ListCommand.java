@@ -10,6 +10,11 @@ import org.bukkit.entity.Player;
 public class ListCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!commandSender.hasPermission("tsm.listp")) {
+            commandSender.sendMessage(Component.text("You do not have permission to use this command.")
+                    .color(NamedTextColor.RED));
+            return true;
+        }
         var players = commandSender.getServer().getOnlinePlayers();
         int online = players.size();
         int max = commandSender.getServer().getMaxPlayers();

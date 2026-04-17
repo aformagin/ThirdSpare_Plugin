@@ -15,6 +15,11 @@ public class RollCommand implements CommandExecutor {
         if (commandSender instanceof Player player){
 
             if(command.getName().equalsIgnoreCase("roll")){
+                if (!player.hasPermission("tsm.roll")) {
+                    player.sendMessage(Component.text("You do not have permission to use this command.")
+                            .color(NamedTextColor.RED));
+                    return true;
+                }
                 player.getServer().getLogger().info("Roll command called by " + player.displayName());
                 int roll;
                 if(strings.length == 1){

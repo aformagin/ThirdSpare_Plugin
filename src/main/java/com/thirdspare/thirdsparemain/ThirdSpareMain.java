@@ -13,6 +13,7 @@ import com.thirdspare.thirdsparemain.commands.econcommands.Balance;
 import com.thirdspare.thirdsparemain.commands.econcommands.SetPlayerBalance;
 import com.thirdspare.thirdsparemain.commands.teleportcommands.SetSpawnCommand;
 import com.thirdspare.thirdsparemain.econ.TSMEconomy;
+import com.thirdspare.thirdsparemain.econ.TSMVaultEconomy;
 import com.thirdspare.thirdsparemain.entities.User;
 import com.thirdspare.thirdsparemain.entities.customitems.BattleAxe;
 import com.thirdspare.thirdsparemain.inventories.Backpack;
@@ -22,7 +23,9 @@ import com.thirdspare.thirdsparemain.kotlin.commands.econcommands.Pay;
 import com.thirdspare.thirdsparemain.kotlin.commands.tpcommands.TPA;
 import com.thirdspare.thirdsparemain.listeners.*;
 import com.thirdspare.thirdsparemain.utilities.ConfigSetup;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.ServicePriority;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -32,10 +35,19 @@ public class ThirdSpareMain extends JavaPlugin {
     private ConfigSetup config;
     private TSMEconomy econ;
     public ChatManager chatManager;
+    private boolean vaultIntegrationEnabled = false;
+    private Economy vaultEconomyProvider;
 
     /* This HashMap keeps track of our online players based on their UUID, so we can easily grab their User
      * content for checking duels, requested teleports, etc. */
     private final HashMap<UUID, User> onlinePlayers = new HashMap<>();
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        var vaultPlugin = getServer().getPluginManager().getPlugin("Vault");
+        vaultIntegrationEnabled = vaultPlugin != null;
+    }
 
     @Override
     public void onEnable() {
@@ -44,6 +56,9 @@ public class ThirdSpareMain extends JavaPlugin {
         var logger = server.getLogger();
         super.onEnable();
         logger.info("ThirdSpareMain loading...");
+        logger.info(vaultIntegrationEnabled
+                ? "-- Vault detected: Vault integration enabled"
+                : "-- Vault not detected: continuing without Vault integration");
 
         /* Plugin Configuration Setup using Paper standards
          * - Uses getDataFolder() for plugin data directory
@@ -73,6 +88,7 @@ public class ThirdSpareMain extends JavaPlugin {
 
         econ = new TSMEconomy(this); //Base Economy Class
         chatManager = new ChatManager(this); //Base ChatManager Class with Paper data folder support
+        initializeVaultEconomyBridge();
 
         /* Registering all EventListeners */
         logger.info("-- Registering EventListeners..."); //Output to console log that events are registering
@@ -118,11 +134,36 @@ public class ThirdSpareMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (vaultEconomyProvider != null) {
+            getServer().getServicesManager().unregister(Economy.class, vaultEconomyProvider);
+            getLogger().info("-- Vault economy bridge unregistered");
+        }
         super.onDisable();
     }
 
     public TSMEconomy getTSMEconomy() {
         return this.econ;
+    }
+
+    public boolean isVaultIntegrationEnabled() {
+        return vaultIntegrationEnabled;
+    }
+
+    private void initializeVaultEconomyBridge() {
+        if (!vaultIntegrationEnabled) {
+            return;
+        }
+
+        var existingEconomy = getServer().getServicesManager().getRegistration(Economy.class);
+        if (existingEconomy != null) {
+            getLogger().warning("-- Existing Vault economy provider detected (" + existingEconomy.getProvider().getName()
+                    + "). Skipping ThirdSpare Vault economy bridge registration.");
+            return;
+        }
+
+        vaultEconomyProvider = new TSMVaultEconomy(this);
+        getServer().getServicesManager().register(Economy.class, vaultEconomyProvider, this, ServicePriority.Normal);
+        getLogger().info("-- ThirdSpare Vault economy bridge registered");
     }
 
     /**

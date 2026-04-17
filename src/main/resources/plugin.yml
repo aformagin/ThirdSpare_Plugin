@@ -62,6 +62,7 @@ commands:
     default: op
   tpa:
     description: Teleport Request
+    permission: tsm.tpa
     default: true
   dump:
     default: op
@@ -95,4 +96,7 @@ permissions:
   tsm.inventory:
     default: true
   tsm.countdown:
+    default: true
+  tsm.tpa:
+    description: Allows players to send teleport requests
     default: true

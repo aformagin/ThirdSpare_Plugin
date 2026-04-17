@@ -3,6 +3,7 @@ package com.thirdspare.thirdsparemain.kotlin.commands.tpcommands
 import com.thirdspare.thirdsparemain.ThirdSpareMain
 import com.thirdspare.thirdsparemain.kotlin.TeleportRequest
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -14,10 +15,21 @@ class TPA(private val instance: ThirdSpareMain) : CommandExecutor {
         //Check for command name and the type of command sender
         if (sender !is Player) return false
         if (command.name != "tpa") return false
+        if (!sender.hasPermission("tsm.tpa")) {
+            sender.sendMessage(Component.text("You do not have permission to use this command.")
+                .color(NamedTextColor.RED))
+            return true
+        }
+        if (args.isEmpty()) return false
 
 
         //Get the target and requester
         val target = instance.server.getPlayer(args[0])
+        if (target == null || !target.isOnline) {
+            sender.sendMessage(Component.text("Target player is not online.")
+                .color(NamedTextColor.RED))
+            return true
+        }
 
         //Check if target = sender
         if (sender == target) {
@@ -26,9 +38,9 @@ class TPA(private val instance: ThirdSpareMain) : CommandExecutor {
         }
 
         //Get the user from the onlinePlayers hashmap
-        val user = instance.onlinePlayers[target?.uniqueId]
+        val user = instance.onlinePlayers[target.uniqueId]
         //Create and Set the pending request for the player
-        user?.teleportRequest = TeleportRequest(sender, target!!, System.currentTimeMillis())
+        user?.teleportRequest = TeleportRequest(sender, target, System.currentTimeMillis())
 
         //Insert the player back into the hashmap
         instance.onlinePlayers.replace(target.uniqueId, user) //Hopefully this works how I think? -- Update. It does.
