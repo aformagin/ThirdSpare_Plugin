@@ -2,7 +2,7 @@ name: ThirdSpareMain
 version: '0.1'
 main: com.thirdspare.thirdsparemain.ThirdSpareMain
 description: Thirdspare Main Plugin -- Contains RPG+ Features
-api-version: 1.18
+api-version: '26.1.2'
 author: auti117
 prefix: TSM
 softdepend:

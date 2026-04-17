@@ -8,7 +8,7 @@ plugin aims to replace an essential, economy, backpack, and friend system plugin
 (that is yet to come lol) and in the future being more modular.
 
 
-Currently the plugin is built against ***Paper 1.21.6 R01 Snapshot***
+Currently the plugin is built against ***Paper 1.21.10 R01 Snapshot***
 
 ## TO-DO
 ___
