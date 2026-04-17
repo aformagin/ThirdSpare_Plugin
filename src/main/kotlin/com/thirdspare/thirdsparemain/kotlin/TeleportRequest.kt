@@ -2,7 +2,7 @@ package com.thirdspare.thirdsparemain.kotlin
 
 import org.bukkit.entity.Player
 
-class TeleportRequest(private val requester: Player, val target: Player, private val requestTime: Long) {
+class TeleportRequest(val requester: Player, val target: Player, private val requestTime: Long) {
     /**
      * Returns the difference in time between the requested time and current system time
      */

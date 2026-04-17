@@ -58,11 +58,21 @@ commands:
     permission: tsm.countdown
   inv:
     permission: tsm.inventory
+  duel:
+    description: Send, accept, or deny a duel request
+    usage: /duel <player>|accept|deny
+    permission: tsm.duel
+    default: true
   test:
     default: op
   tpa:
     description: Teleport Request
     permission: tsm.tpa
+    default: true
+  tpaccept:
+    description: Accept a teleport request
+    permission: tsm.tpa
+    usage: /tpaccept
     default: true
   dump:
     default: op
@@ -99,4 +109,7 @@ permissions:
     default: true
   tsm.tpa:
     description: Allows players to send teleport requests
+    default: true
+  tsm.duel:
+    description: Allows players to use the duel system
     default: true

@@ -16,7 +16,6 @@ public class AddPlayerBalance implements CommandExecutor {
     public AddPlayerBalance(ThirdSpareMain plugin) {
         this.plugin = plugin;
     }
-    //TODO Player permissions
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s,
                              @NotNull String[] strings) {
