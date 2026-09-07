@@ -21,6 +21,11 @@ public class SetPlayerBalance implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s,
                              @NotNull String[] strings) {
         if (commandSender instanceof Player) {
+            if (!commandSender.hasPermission("tsm.econ.bal_set")) {
+                commandSender.sendMessage(Component.text("You do not have permission to use this command.")
+                        .color(NamedTextColor.RED));
+                return true;
+            }
             var player = ((Player) commandSender).getPlayer();
 
             if (command.getName().equalsIgnoreCase("setbalance")) {

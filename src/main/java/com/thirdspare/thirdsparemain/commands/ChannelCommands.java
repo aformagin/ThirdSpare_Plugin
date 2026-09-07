@@ -1,6 +1,8 @@
 package com.thirdspare.thirdsparemain.commands;
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +20,11 @@ public class ChannelCommands implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player player) {
             if (command.getName().equalsIgnoreCase("chat") && strings.length >= 1) {
+                if (!player.hasPermission("tsm.chat")) {
+                    player.sendMessage(Component.text("You do not have permission to use this command.")
+                            .color(NamedTextColor.RED));
+                    return true;
+                }
                 var list = plugin.chatManager.getChannelsList();
                 switch (strings[0]) {
                     case "join" -> {

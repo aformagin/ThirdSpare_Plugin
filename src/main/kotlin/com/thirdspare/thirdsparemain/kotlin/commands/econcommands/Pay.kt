@@ -2,7 +2,7 @@ package com.thirdspare.thirdsparemain.kotlin.commands.econcommands
 
 import com.thirdspare.thirdsparemain.ThirdSpareMain
 import com.thirdspare.thirdsparemain.utilities.Utils
-import org.bukkit.ChatColor
+import net.kyori.adventure.text.Component
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -15,6 +15,10 @@ class Pay(val plugin: ThirdSpareMain) : CommandExecutor {
             else -> {
                 val player = commandSender.player
                 if (command.name.equals("pay", ignoreCase = true)) {
+                    if (!commandSender.hasPermission("tsm.econ.pay")) {
+                        commandSender.sendMessage(Component.text("You do not have permission to use this command."))
+                        return true
+                    }
                     // Checking the number of arguments
                     if (strings.size < 2) return false
                     val target = plugin.server.getPlayer(strings[0])

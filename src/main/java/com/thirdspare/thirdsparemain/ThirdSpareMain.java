@@ -8,20 +8,27 @@ import com.thirdspare.thirdsparemain.chat.ChatManager;
 import com.thirdspare.thirdsparemain.commands.ChannelCommands;
 import com.thirdspare.thirdsparemain.commands.ListCommand;
 import com.thirdspare.thirdsparemain.commands.RollCommand;
+import com.thirdspare.thirdsparemain.commands.StructCommand;
+import com.thirdspare.thirdsparemain.commands.gameeventcommands.Dueling;
 import com.thirdspare.thirdsparemain.commands.econcommands.AddPlayerBalance;
 import com.thirdspare.thirdsparemain.commands.econcommands.Balance;
 import com.thirdspare.thirdsparemain.commands.econcommands.SetPlayerBalance;
 import com.thirdspare.thirdsparemain.commands.teleportcommands.SetSpawnCommand;
 import com.thirdspare.thirdsparemain.econ.TSMEconomy;
+import com.thirdspare.thirdsparemain.econ.TSMVaultEconomy;
 import com.thirdspare.thirdsparemain.entities.User;
 import com.thirdspare.thirdsparemain.entities.customitems.BattleAxe;
 import com.thirdspare.thirdsparemain.inventories.Backpack;
 import com.thirdspare.thirdsparemain.kotlin.commands.Countdown;
 import com.thirdspare.thirdsparemain.kotlin.commands.OpenBackpack;
+import com.thirdspare.thirdsparemain.kotlin.commands.StatsDump;
 import com.thirdspare.thirdsparemain.kotlin.commands.econcommands.Pay;
 import com.thirdspare.thirdsparemain.kotlin.commands.tpcommands.TPA;
+import com.thirdspare.thirdsparemain.kotlin.commands.tpcommands.TPAccept;
 import com.thirdspare.thirdsparemain.listeners.*;
 import com.thirdspare.thirdsparemain.utilities.ConfigSetup;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -32,10 +39,19 @@ public class ThirdSpareMain extends JavaPlugin {
     private ConfigSetup config;
     private TSMEconomy econ;
     public ChatManager chatManager;
+    private boolean vaultIntegrationEnabled = false;
+    private Economy vaultEconomyProvider;
 
     /* This HashMap keeps track of our online players based on their UUID, so we can easily grab their User
      * content for checking duels, requested teleports, etc. */
     private final HashMap<UUID, User> onlinePlayers = new HashMap<>();
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        var vaultPlugin = getServer().getPluginManager().getPlugin("Vault");
+        vaultIntegrationEnabled = vaultPlugin != null;
+    }
 
     @Override
     public void onEnable() {
@@ -44,18 +60,21 @@ public class ThirdSpareMain extends JavaPlugin {
         var logger = server.getLogger();
         super.onEnable();
         logger.info("ThirdSpareMain loading...");
+        logger.info(vaultIntegrationEnabled
+                ? "-- Vault detected: Vault integration enabled"
+                : "-- Vault not detected: continuing without Vault integration");
 
         /* Plugin Configuration Setup using Paper standards
          * - Uses getDataFolder() for plugin data directory
          * - Uses saveResource() to copy default files from resources
          * - Creates necessary data files in plugin data folder */
-        
+
         // Ensure plugin data folder exists
         if (!getDataFolder().exists()) {
             getDataFolder().mkdirs();
             logger.info("-- Plugin data folder created at: " + getDataFolder().getAbsolutePath());
         }
-        
+
         // Save default configuration files using Paper's resource system
         saveResource("channels.json", false); // false = don't replace if exists
         logger.info("-- Default configuration files ensured");
@@ -73,6 +92,7 @@ public class ThirdSpareMain extends JavaPlugin {
 
         econ = new TSMEconomy(this); //Base Economy Class
         chatManager = new ChatManager(this); //Base ChatManager Class with Paper data folder support
+        initializeVaultEconomyBridge();
 
         /* Registering all EventListeners */
         logger.info("-- Registering EventListeners..."); //Output to console log that events are registering
@@ -82,6 +102,7 @@ public class ThirdSpareMain extends JavaPlugin {
         server.getPluginManager().registerEvents(new RespawnListener(this), this);
         server.getPluginManager().registerEvents(new ChatChannelListener(this), this);
         server.getPluginManager().registerEvents(new Backpack(this), this);
+        server.getPluginManager().registerEvents(new DuelListener(this), this);
 //        server.getPluginManager().registerEvents(new SignListener(this), this);
 
 
@@ -97,9 +118,11 @@ public class ThirdSpareMain extends JavaPlugin {
         this.getCommand("roll").setExecutor(new RollCommand());
         this.getCommand("listp").setExecutor(new ListCommand());
         this.getCommand("inv").setExecutor(new OpenBackpack(this));
+        this.getCommand("duel").setExecutor(new Dueling(this));
         //Teleport commands
         this.getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
         this.getCommand("tpa").setExecutor(new TPA(this));
+        this.getCommand("tpaccept").setExecutor(new TPAccept(this));
         //Econ commands
         this.getCommand("balance").setExecutor(new Balance(this));
         this.getCommand("addbalance").setExecutor(new AddPlayerBalance(this));
@@ -109,20 +132,47 @@ public class ThirdSpareMain extends JavaPlugin {
         this.getCommand("chat").setExecutor(new ChannelCommands(this));
         this.getCommand("countdown").setExecutor(new Countdown(this));
 
+        final boolean DEVELOPMENT_MODE = true;
+        if (DEVELOPMENT_MODE) {
+            /* Register TEST commands here */
+            this.getCommand("test").setExecutor(new StructCommand());
+            this.getCommand("dump").setExecutor(new StatsDump(this));
+        }
 
-
-        /* Register TEST commands here */
-//        this.getCommand("test").setExecutor(new StructCommand());
-//        this.getCommand("dump").setExecutor(new StatsDump(this));
     }
 
     @Override
     public void onDisable() {
+        if (vaultEconomyProvider != null) {
+            getServer().getServicesManager().unregister(Economy.class, vaultEconomyProvider);
+            getLogger().info("-- Vault economy bridge unregistered");
+        }
         super.onDisable();
     }
 
     public TSMEconomy getTSMEconomy() {
         return this.econ;
+    }
+
+    public boolean isVaultIntegrationEnabled() {
+        return vaultIntegrationEnabled;
+    }
+
+    private void initializeVaultEconomyBridge() {
+        if (!vaultIntegrationEnabled) {
+            return;
+        }
+
+        var existingEconomy = getServer().getServicesManager().getRegistration(Economy.class);
+        if (existingEconomy != null) {
+            getLogger().warning("-- Existing Vault economy provider detected (" + existingEconomy.getProvider().getName()
+                    + "). Skipping ThirdSpare Vault economy bridge registration.");
+            return;
+        }
+
+        vaultEconomyProvider = new TSMVaultEconomy(this);
+        getServer().getServicesManager().register(Economy.class, vaultEconomyProvider, this, ServicePriority.Normal);
+        getLogger().info("-- ThirdSpare Vault economy bridge registered");
     }
 
     /**
